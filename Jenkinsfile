@@ -29,7 +29,7 @@ pipeline {
                 sh 'terraform show -no-color tfplan > tfplan.txt'
             }
         }
-        stage('Apply / Destroy') {
+        stage('Apply') {
             steps {
                 script {
                     if (params.action == 'apply') {
@@ -40,10 +40,8 @@ pipeline {
                         }
 
                         sh 'terraform ${action} -input=false tfplan'
-                    } else if (params.action == 'destroy') {
-                        sh 'terraform ${action} --auto-approve'
-                    } else {
-                        error "Invalid action selected. Please choose either 'apply' or 'destroy'."
+                    }  else {
+                        error "Invalid action selected. The only supported action is 'apply'."
                     }
                 }
             }
